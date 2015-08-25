@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300")
+
+border-radius()
+  -webkit-border-radius arguments
+  -moz-border-radius arguments
+  border-radius arguments
+  
+font()
+  font 300 arguments "Roboto Condensed", sans-serif
+
+bg = #313437
+fg = #4B4F53
+fgl = #818487
+txt = #D4D4D5
+
+*
+  box-sizing border-box !important
+
+html, body
+  background bg
+  color txt
+  font 35px
+  
+a
+  color inherit
+  text-decoration underline
+  cursor pointer
+  
+#body
+  width 85%
+  margin 0 auto
+  text-align center
+  font 25px
+  
+  @media screen and (max-width: 500px)
+    width 100%
+  
+  form, .form
+    width 50%
+    margin 0 auto
+    
+    @media screen and (max-width: 500px)
+      width 80%
+    
+    h1
+      margin-bottom 0
+    
+  input, .btn
+    color txt
+    text-align center
+    padding 5px 25px
+    font 35px
+    margin 0
+    border-radius 30px
+    text-decoration none
+
+  input[type='text'], input[type='email'], input[type='password']
+    background transparent
+    border 3px solid fg
+      
+    &:hover
+      border-color fgl
+      
+    &:active, &:focus
+      border-color fgl
+      background fgl
+      
+  input[type='submit'], .btn
+    border none
+    background fg
+    cursor pointer
+    
+    &:hover, &:active, &:focus
+      background fgl
+      
+.alert
+  background fg
+  text-align center
+  padding 20px
+  font 25px
+  
+  h2
+    font 30px
+
+.full
+  width 100%
+  display block
+  
+.half
+  width 49.5%
+  display inline-block
+  
+  @media screen and (max-width: 500px)
+    width 100%
+    display block
