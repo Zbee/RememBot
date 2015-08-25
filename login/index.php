@@ -22,8 +22,9 @@ if (array_key_exists("u", $_POST)) {
         $hash,
         strtotime('+30 days'),
         "/",
-        "rb.zbee.me"
+        BASE_URL
       );
+      $USLite->redirect301("../manage?loggedin");
     }
     else
       $e = sprintf($err, "That password is incorrect. Did you "

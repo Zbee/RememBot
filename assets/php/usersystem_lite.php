@@ -27,6 +27,15 @@ class USLite {
       );
   }
 
+  public function redirect301($url) {
+    if (!headers_sent()) {
+      header("HTTP/1.1 301 Moved Permanently");
+      header("Location: $url");
+      return true;
+    }
+    return false;
+  }
+
   function opensslRand($min = 0, $max = 1000) {
     $range = $max - $min;
     if ($range < 1) return $min;
@@ -148,6 +157,25 @@ class USLite {
 
   public function logIn ($username, $password) {
     $ip = $this->getIP();
+  }
+
+  public function logOut ($code, $user, $cursess, $all) {
+    $code = $this->sanitize($code);
+    $user = $user == true ? true : false;
+    $cursess = $cursess == true ? true : false;
+    $all = $all == true ? true : false;
+
+    if ($cursess === true) {
+      setcookie(
+        SITE_NAME,
+        null,
+        strtotime('-60 days'),
+        "/",
+        BASE_URL
+      );
+    }
+
+    return false;
   }
 
 }

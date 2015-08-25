@@ -1,36 +1,8 @@
 <?php
 require("header.php");
 
-if (array_key_exists("u", $_POST)) {
-  $u = $USLite->USERS->query()->where("username", "==", $_POST["u"])->execute();
-  $e = $USLite->USERS->query()->where("email", "==", $_POST["u"])->execute();
-
-  $retr = count($u) > count($e) ? $u : $e;
-
-  if (count($retr) === 1)
-    if (hash("sha512", $_POST["p"].$retr->value("salt")) == $retr->value("password")) {
-      $e = sprintf($err, "Logged in, <a href='manage'>manage lists</a> now.");
-      $hash = hash(
-        "sha512",
-        time().$_POST["u"].$_SERVER["REMOTE_ADDR"]
-          .bin2hex(openssl_random_pseudo_bytes(64))
-      );
-      $hash = $hash.md5($hash.$retr->value("salt"));
-      setcookie(
-        SITE_NAME,
-        $hash,
-        strtotime('+30 days'),
-        "/",
-        "rb.zbee.me"
-      );
-    }
-    else
-      $e = sprintf($err, "That password is incorrect. Did you "
-        . "<a onClick='forgot()' href='forgot' id='forQuick'>forget</a> it?");
-  else
-    $e = sprintf($err, "No such user. Would you like to <a onClick='register()"
-      . "' href='register' id='regQuick'>create an account</a>?");
-}
+if (array_key_exists("loggedout", $_GET))
+  $e = sprintf($err, "You are logged out.") . "<br>";
 ?>
 
 <div id='body'>
