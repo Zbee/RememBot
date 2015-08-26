@@ -119,9 +119,22 @@ class USLite {
       $_COOKIE[SITE_NAME],
       FILTER_SANITIZE_FULL_SPECIAL_CHARS
     );
-    $search = $this->BLOBS->query()->where("blob", "==", $user)
-      ->where("date", ">", time())->where("action", "==", "session")->execute();
-    return $search;
+    $blobSearch = $this->BLOBS->query()->where("blob", "==", $user)
+      ->where("expiration", ">", time())->where("action", "==", "session")
+      ->execute();
+    if (count($blobSearch) > 0) {
+      $user = $this->USERS->query()
+      ->where("id", "==", $blobSearch->value("owner"))->execute();
+      return [
+        "id" => $user->value("id"),
+        "username" => $user->value("username"),
+        "email" => $user->value("email"),
+        "salt" => $user->value("salt"),
+        "ifttt_key" => $user->value("ifttt_key")
+      ];
+    } else {
+      return false;
+    }
   }
 
   public function insertUserBlob ($id, $action = "session") {
