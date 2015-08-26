@@ -2,33 +2,13 @@
 require("../header.php");
 
 if (array_key_exists("u", $_POST)) {
-  $u = $USLite->USERS->query()->where("username", "==", $_POST["u"])->execute();
-  $e = $USLite->USERS->query()->where("email", "==", $_POST["u"])->execute();
+  $login = $USLite->logIn($_POST["u"], $_POST["p"]);
 
-  $retr = count($u) > count($e) ? $u : $e;
-
-  if (count($retr) === 1)
-    if (hash("sha512", $_POST["p"].$retr->value("salt")) == $retr->value("password")) {
-      $e = sprintf($err, "Logged in, <a href='../manage'>manage lists</a> "
-        . "now.");
-      $hash = hash(
-        "sha512",
-        time().$_POST["u"].$_SERVER["REMOTE_ADDR"]
-          .bin2hex(openssl_random_pseudo_bytes(64))
-      );
-      $hash = $hash.md5($hash.$retr->value("salt"));
-      setcookie(
-        SITE_NAME,
-        $hash,
-        strtotime('+30 days'),
-        "/",
-        BASE_URL
-      );
-      $USLite->redirect301("../manage?loggedin");
-    }
-    else
-      $e = sprintf($err, "That password is incorrect. Did you "
-        . "<a onClick='forgot()' href='../forgot' id='forQuick'>forget</a> "
+  if ($login === true) {
+    $e = sprintf($err, "Logged in, <a href='../manage'>manage lists</a> now.");
+    $USLite->redirect301("../manage?loggedin");
+  } elseif ($login === "password")
+    $e = sprintf($err, "That password is incorrect. Did you <a onClick='forgot()' href='../forgot' id='forQuick'>forget</a> "
         . "it?");
   else
     $e = sprintf($err, "No such user. Would you like to <a onClick='register()"

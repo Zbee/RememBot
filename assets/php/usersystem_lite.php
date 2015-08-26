@@ -124,6 +124,24 @@ class USLite {
     return $search;
   }
 
+  public function insertUserBlob ($id, $action = "session") {
+    $id = intval($id);
+    $action = $this->sanitize($action);
+    $salt = $this->USERS->query()->where("id", "==", $id)->execute();
+    if (count($salt) == 0) return false;
+    $hash = $this->createSalt();
+    $hash = $hash.md5($salt->value("salt").$hash);
+    $data = [
+      "owner" => $id,
+      "action" => $action,
+      "expiration" => strtotime('+30 days'),
+      "blob" => $hash
+    ];
+    $store = new \JamesMoss\Flywheel\Document($data);
+    $this->BLOBS->store($store);
+    return $hash;
+  }
+
   public function addUser ($username, $password, $email, $ifttt_key) {
     $username = $this->sanitize($username, "s");
     $ifttt_key = $this->sanitize($ifttt_key, "s");
@@ -156,7 +174,30 @@ class USLite {
   }
 
   public function logIn ($username, $password) {
-    $ip = $this->getIP();
+    $username = $this->sanitize($username);
+
+    $u = $this->USERS->query()->where("username", "==", $username)->execute();
+    $e = $this->USERS->query()->where("email", "==", $username)->execute();
+
+    $retr = count($u) > count($e) ? $u : $e;
+
+    if (count($retr) === 1) {
+      if (hash("sha512", $password.$retr->value("salt")) == $retr->value("password")) {
+        $hash = $this->insertUserBlob($retr->value("id"));
+        setcookie(
+          SITE_NAME,
+          $hash,
+          strtotime('+30 days'),
+          "/",
+          BASE_URL
+        );
+        return true;
+      } else {
+        return "password";
+      }
+    } else {
+      return "username";
+    }
   }
 
   public function logOut ($code, $user, $cursess, $all) {
