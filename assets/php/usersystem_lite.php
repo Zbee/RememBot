@@ -60,7 +60,7 @@ class USLite {
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             . "`~0123456789!@$%^&*()-_+={}[]\\|:;'\"<,>."
             . bin2hex(openssl_random_pseudo_bytes(64)),
-            $this->opensslRand(32, 64+strlen(SITE_NAME))
+            $this->opensslRand(32, 64+strlen(strtolower(SITE_NAME)))
           )
         ),
         1,
@@ -114,24 +114,26 @@ class USLite {
   }
 
   public function session ($user = false) {
-    if (!isset($_COOKIE[SITE_NAME]) && !$user) return "cookie";
+    if (!isset($_COOKIE[strtolower(SITE_NAME)]) && !$user) return "cookie";
     $user = filter_var(
-      $_COOKIE[SITE_NAME],
+      $_COOKIE[strtolower(SITE_NAME)],
       FILTER_SANITIZE_FULL_SPECIAL_CHARS
     );
     $blobSearch = $this->BLOBS->query()->where("blob", "==", $user)->execute();
     if (count($blobSearch) === 1) {
       $user = $this->USERS->query()
       ->where("id", "==", $blobSearch->value("owner"))->execute();
-      return [
-        "id" => $user->value("id"),
-        "username" => $user->value("username"),
-        "email" => $user->value("email"),
-        "salt" => $user->value("salt"),
-        "ifttt_key" => $user->value("ifttt_key")
-      ];
+      if (md5($user->value("salt").substr($user, 0, 128)) == substr($user, -32))
+        return [
+          "id" => $user->value("id"),
+          "username" => $user->value("username"),
+          "email" => $user->value("email"),
+          "salt" => $user->value("salt"),
+          "ifttt_key" => $user->value("ifttt_key")
+        ];
+      return "tamper";
     } else {
-      return false;
+      return "session";
     }
   }
 
@@ -196,7 +198,7 @@ class USLite {
       if (hash("sha512", $password.$retr->value("salt")) == $retr->value("password")) {
         $hash = $this->insertUserBlob($retr->value("id"));
         setcookie(
-          SITE_NAME,
+          strtolower(SITE_NAME),
           $hash,
           strtotime('+30 days'),
           "/",
@@ -211,21 +213,29 @@ class USLite {
     }
   }
 
-  public function logOut ($code, $user, $cursess, $all) {
+  public function logOut ($code, $user, $cursess = false, $all = false) {
     $code = $this->sanitize($code);
-    $user = $user == true ? true : false;
+    $user = intval($user);
     $cursess = $cursess == true ? true : false;
     $all = $all == true ? true : false;
 
     if ($cursess === true) {
       setcookie(
-        SITE_NAME,
+        strtolower(SITE_NAME),
         null,
         strtotime('-60 days'),
         "/",
         BASE_URL
       );
     }
+
+    if (!$all) {
+      $matchedBlobs = $this->BLOBS->query()->where("blob", "==", $code)->execute();
+    } else {
+      $matchedBlobs = $this->BLOBS->query()->where("owner", "==", $user)->execute();
+    }
+    foreach ($matchedBlobs as $blob)
+      $this->BLOBS->delete($blob);
 
     return false;
   }
