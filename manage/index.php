@@ -16,10 +16,8 @@ if (array_key_exists("loggedin", $_GET))
     <br>
     <div class='alert'>You have <b><?=count($lOL)?></b> lists already.</div>
     <?php
-    foreach ($lOL as $list) {
-      echo "<br>";
-      echo "<a href='edit?$list->id' class='btn full'>Edit $list->name</a>";
-    }
+    foreach ($lOL as $list)
+      echo "<br><a href='edit?$list->id' class='btn full'>Edit $list->name</a>";
     ?>
     <br>
     <a href='../help' class='btn half'>Help</a>
