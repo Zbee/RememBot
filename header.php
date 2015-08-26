@@ -9,6 +9,8 @@ $flywheel = $config = new \JamesMoss\Flywheel\Config(ASSETS_PATH . "db");
 require("assets/php/usersystem_lite.php");
 $USLite = new USLite ($flywheel);
 
+$lists = new \JamesMoss\Flywheel\Repository("lists", $flywheel);
+
 $session = $USLite->session();
 
 $err = "<br><div class='alert'>%s</div>";
