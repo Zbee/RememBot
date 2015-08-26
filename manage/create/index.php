@@ -1,4 +1,5 @@
 <?php
+$requireAcc = true;
 require("../../header.php");
 
 if (array_key_exists("n", $_POST)) {

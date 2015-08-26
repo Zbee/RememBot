@@ -1,4 +1,5 @@
 <?php
+$requireAcc = true;
 require("../header.php");
 
 $lOL = $lists->query()->where("id", ">", 0)->execute();

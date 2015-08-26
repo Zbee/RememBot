@@ -13,6 +13,12 @@ $lists = new \JamesMoss\Flywheel\Repository("lists", $flywheel);
 
 $session = $USLite->session();
 
+if (!isset($requireAcc)) $requireAcc = false;
+
+if ($requireAcc === true)
+  if (!is_array($session))
+    $USLite->redirect301("/");
+
 $err = "<br><div class='alert'>%s</div>";
 $e = "";
 ?>
