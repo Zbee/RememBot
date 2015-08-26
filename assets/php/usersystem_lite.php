@@ -115,7 +115,7 @@ class USLite {
 
   public function session ($user = false) {
     if (!isset($_COOKIE[strtolower(SITE_NAME)]) && !$user) return "cookie";
-    $user = filter_var(
+    $blob = $user = filter_var(
       $_COOKIE[strtolower(SITE_NAME)],
       FILTER_SANITIZE_FULL_SPECIAL_CHARS
     );
@@ -123,7 +123,7 @@ class USLite {
     if (count($blobSearch) === 1) {
       $user = $this->USERS->query()
       ->where("id", "==", $blobSearch->value("owner"))->execute();
-      if (md5($user->value("salt").substr($user, 0, 128)) == substr($user, -32))
+      if (md5($user->value("salt").substr($blob, 0, 128)) == substr($blob, -32))
         return [
           "id" => $user->value("id"),
           "username" => $user->value("username"),
