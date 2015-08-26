@@ -119,10 +119,8 @@ class USLite {
       $_COOKIE[SITE_NAME],
       FILTER_SANITIZE_FULL_SPECIAL_CHARS
     );
-    $blobSearch = $this->BLOBS->query()->where("blob", "==", $user)
-      ->where("expiration", ">", time())->where("action", "==", "session")
-      ->execute();
-    if (count($blobSearch) > 0) {
+    $blobSearch = $this->BLOBS->query()->where("blob", "==", $user)->execute();
+    if (count($blobSearch) === 1) {
       $user = $this->USERS->query()
       ->where("id", "==", $blobSearch->value("owner"))->execute();
       return [
@@ -164,7 +162,7 @@ class USLite {
     if (count($ucheck) === 0) {
       $echeck = $this->USERS->query()->where("email", "==", $email)->execute();
       if (count($echeck) === 0) {
-        $id = $this->USERS->query()->where("id", "!=", 0)
+        $id = $this->USERS->query()->where("id", ">", 0)
           ->orderBy("id DESC")->limit(1, 0)->execute();
         $id = count($id === 1) ? intval($id->value("id")) + 1 : 1;
         $data = [
