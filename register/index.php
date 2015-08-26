@@ -42,10 +42,13 @@ if (array_key_exists("u", $_POST)) {
     <br>
     <input type='password' name='p' class='full' placeholder='Password' id='p'>
     <br>
-    <input type='text' name='i' class='full' placeholder='Secret Key for IFTTT.com/Maker'
+    <input type='text' name='i' class='full' placeholder='Secret Key for IFTTT Maker'
       id='i' <?=array_key_exists("i", $_POST) ? "value='"
         . $USLite->sanitize($_POST["i"]) . "'" : ""?>>
-    <br>
+    Make sure you have an IFTTT recipe set up with the Maker channel triggering
+    it with the event name "rememBot". The recipe will be triggered as part of
+    the key verification process.
+    <br><br>
     <button class='btn full'>Register!</button>
     <br>
     <a href='../login' class='btn full'>Log in instead</a>
