@@ -1,6 +1,9 @@
 <?php
 require("../header.php");
 
+if (is_array($session))
+  $USLite->redirect301("../manage");
+
 if (array_key_exists("u", $_POST)) {
   $login = $USLite->logIn($_POST["u"], $_POST["p"]);
 
