@@ -10,6 +10,7 @@ require("assets/php/usersystem_lite.php");
 $USLite = new USLite ($flywheel);
 
 $lists = new \JamesMoss\Flywheel\Repository("lists", $flywheel);
+$recipients = new \JamesMoss\Flywheel\Repository("recipients", $flywheel);
 
 $session = $USLite->session();
 
