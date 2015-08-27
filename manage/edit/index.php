@@ -11,6 +11,17 @@ if (count($list) != 1) $USLite->redirect301("../");
 
 $list = $list->value("id");
 
+if (array_key_exists("arn", $_POST)) {
+  $data = [
+    "list" => $list,
+    "name" => $USLite->sanitize($_POST["arn"]),
+    "contact" => strip_tags(trim($_POST["arc"])),
+    "active" => 1
+  ];
+  $store = new \JamesMoss\Flywheel\Document($data);
+  $recipients->store($store);
+}
+
 $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
 ?>
 
@@ -21,14 +32,23 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
     <br>
     <b>Add a recipient to this list</b>
     <br>
-    <input type='text' name='arn' placeholder='Name' class='small'>
-    <input type='text' name='arc' placeholder='Email / Phone #' class='small'>
-    <button class='btn small'>Add!</button>
+    <form action='' method='post' class='ignore'>
+      <input type='text' name='arn' placeholder='Name' class='small'>
+      <input type='text' name='arc' placeholder='Email / Phone #' class='small'>
+      <button class='btn small'>Add!</button>
+    </form>
     <br><br>
     <b>Current recipients: <u><?=count($recipientsFL)?></u></b>
+    <br>
     <?php
     foreach ($recipientsFL as $r)
-      var_dump($r);
+      echo "<div class='combined quarter'>"
+          . "<div class='btn'>"
+            . "<p>$r->name</p>"
+            . "<a href='#' title='Active; Will receive next message'>A</a>"
+            . "<a href='#' title='Delete this recipient'>X</a>"
+          . "</div>"
+        . "</div>";
     ?>
     <br><br>
     <a href='../../help' class='btn half'>Help</a>
