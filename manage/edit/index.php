@@ -9,10 +9,14 @@ $list = $lists->query()->where("id", "==", $id)->execute();
 
 if (count($list) != 1) $USLite->redirect301("../");
 
+if ($list->value("owner") !== $session["id"]) $USLite->redirect301("../");
+
 $list = $list->value("id");
 
 if (array_key_exists("arn", $_POST)) {
   $data = [
+    "id" => $recipients->query()->where("id", "!=", 0)
+      ->orderBy("id DESC")->limit(1, 0)->execute(),
     "list" => $list,
     "name" => $USLite->sanitize($_POST["arn"]),
     "contact" => strip_tags(trim($_POST["arc"])),
@@ -44,10 +48,10 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
     foreach ($recipientsFL as $r)
       echo "<div class='combined quarter'>"
           . "<div class='btn'>"
-            . "<a href='#' title='Modify this recipient; contact: $r->contact'>"
+            . "<a href='modifyrecipient?$r->id' title='Modify this recipient; contact: $r->contact'>"
             . "$r->name</a>"
-            . "<a href='#' title='Active; Will receive next message'>A</a>"
-            . "<a href='#' title='Delete this recipient'>&times;</a>"
+            . "<a href='toggleRecipient.php?$r->id' title='Active; Will receive next message'>A</a>"
+            . "<a href='deleteRecipient.php?$r->id' title='Delete this recipient'>&times;</a>"
           . "</div>"
         . "</div>";
     ?>
