@@ -15,8 +15,8 @@ $list = $list->value("id");
 
 if (array_key_exists("arn", $_POST)) {
   $data = [
-    "id" => $recipients->query()->where("id", "!=", 0)
-      ->orderBy("id DESC")->limit(1, 0)->execute()->value("id"),
+    "id" => $recipients->query()->where("id", ">", "0")
+      ->orderBy("id DESC")->limit(1, 0)->execute()->value("id") + 1,
     "list" => $list,
     "name" => $USLite->sanitize($_POST["arn"]),
     "contact" => strip_tags(trim($_POST["arc"])),
