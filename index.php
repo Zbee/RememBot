@@ -26,7 +26,8 @@ if (array_key_exists("loggedout", $_GET))
     <a href='help' class='btn half'>About</a>
     <br><br>
     Created by <a href='https://keybase.io/zbee' target='_blank'>Zbee
-    (Ethan Henderson)</a>
+    (Ethan Henderson)</a>, open source on
+    <a href='https://github.com/zbee/remembot' target='_blank'>GitHub</a>
   </div>
 </div>
 
