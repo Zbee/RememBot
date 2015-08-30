@@ -14,7 +14,25 @@ $list = $lists->query()->where("id", "==", $recipient->value("list"))->execute()
 if ($list->value("owner") !== $session["id"]) $USLite->redirect301("../../");
 
 if (array_key_exists("n", $_POST)) {
-  var_dump($_POST);
+  $compare = [
+    "n" => $recipient->value("name"),
+    "c" => $recipient->value("contact")
+  ];
+  if ($compare !== $_POST) {
+    $data = [
+      "id" => $recipient->value("id"),
+      "list" => $recipient->value("list"),
+      "name" => $USLite->sanitize($_POST["n"]),
+      "contact" => $USLite->sanitize($_POST["c"]),
+      "active" => $recipient->value("active")
+    ];
+    $update = new \JamesMoss\Flywheel\Document($data);
+    foreach ($recipient as $r)
+      $recipients->delete($r);
+    $recipients->store($update);
+    $recipient = $recipients->query()->where("id", "==", $id)->execute();
+    $e = sprintf($err, "This recipient has been updated.");
+  }
 }
 ?>
 
