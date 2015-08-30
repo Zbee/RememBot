@@ -5,7 +5,7 @@ require("../../header.php");
 if (isset($_GET) && count($_GET) != 1) $USLite->redirect301("../");
 $id = intval(array_search(array_values($_GET)[0], $_GET));
 
-$list = $lists->query()->where("id", "==", $id)->execute();
+$listO = $list = $lists->query()->where("id", "==", $id)->execute();
 
 if (count($list) != 1) $USLite->redirect301("../");
 
@@ -15,7 +15,7 @@ $list = $list->value("id");
 
 if (array_key_exists("arn", $_POST)) {
   $data = [
-    "id" => $recipients->query()->where("id", ">", "0")
+    "id" => $recipients->query()->where("id", ">", 0)
       ->orderBy("id DESC")->limit(1, 0)->execute()->value("id") + 1,
     "list" => $list,
     "name" => $USLite->sanitize($_POST["arn"]),
@@ -31,7 +31,8 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
 
 <div id='body'>
   <div class='form'>
-    <h1>Manage the recipients of your list, <?=$session["username"]?></h1>
+    <h1>Manage the recipients of your list "<?=$listO->value("name")?>",
+      <?=$session["username"]?></h1>
     <?=$e?>
     <br>
     <b>Add a recipient to this list</b>
@@ -51,7 +52,7 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
             . "<a href='modifyrecipient?$r->id' title='Modify this recipient; contact: $r->contact'>"
             . "$r->name</a>"
             . "<a href='toggleRecipient.php?$r->id' title='Active; Will receive next message'>A</a>"
-            . "<a href='deleteRecipient.php?$r->id' title='Delete this recipient'>&times;</a>"
+            . "<a href='deleteRecipient.php?list=$list&recipient=$r->id' title='Delete this recipient'>&times;</a>"
           . "</div>"
         . "</div> ";
     ?>
