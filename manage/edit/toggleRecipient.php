@@ -13,7 +13,8 @@ $list = $lists->query()->where("id", "==", $list)->execute();
 if (count($list) !== 1) $USLite->redirect301($url);
 if ($list->value("owner") !== $session["id"]) $USLite->redirect301($url);
 
-$recipient = $recipients->query()->where("id", "==", $recipient)->execute();
+$recipient = $recipients->query()->where("id", "==", $recipient)
+  ->limit(1, 0)->execute();
 
 if (count($recipient) !== 1) $USLite->redirect301($url);
 if ($recipient->value("list") !== $listI) $USLite->redirect301($url);
