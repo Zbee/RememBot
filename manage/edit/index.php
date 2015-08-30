@@ -49,10 +49,17 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
     foreach ($recipientsFL as $r)
       echo "<div class='combined quarter'>"
           . "<div class='btn'>"
-            . "<a href='modifyrecipient?$r->id' title='Modify this recipient; contact: $r->contact'>"
+            . "<a href='modifyrecipient?$r->id' "
+              . "title='Modify this recipient; contact: $r->contact'>"
             . "$r->name</a>"
-            . "<a href='toggleRecipient.php?$r->id' title='Active; Will receive next message'>A</a>"
-            . "<a href='deleteRecipient.php?list=$list&recipient=$r->id' title='Delete this recipient'>&times;</a>"
+            . "<a href='toggleRecipient.php?list=$list&recipient=$r->id' "
+              . "title='" . ($r->active === 1
+                  ? "Active; Will receive next message"
+                  : "Inactive; Won't receive next message")
+              . "'>"
+              . ($r->active === 1 ? "A" : "I") . "</a>"
+            . "<a href='deleteRecipient.php?list=$list&recipient=$r->id' "
+              . "title='Delete this recipient'>&times;</a>"
           . "</div>"
         . "</div> ";
     ?>
