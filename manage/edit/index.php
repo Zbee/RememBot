@@ -26,7 +26,8 @@ if (array_key_exists("arn", $_POST)) {
   $recipients->store($store);
 }
 
-$recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
+$recipientsFL = $recipients->query()->where("list", "==", $list)
+  ->orderBy("name ASC")->execute();
 ?>
 
 <div id='body'>
@@ -55,9 +56,9 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
             . "<a href='toggleRecipient.php?list=$list&recipient=$r->id' "
               . "title='" . ($r->active === 1
                   ? "Active; Will receive next message"
-                  : "Inactive; Won't receive next message")
+                  : "Inactive; Will not receive next message")
               . "'>"
-              . ($r->active === 1 ? "A" : "I") . "</a>"
+              . ($r->active === 1 ? "A" : "i") . "</a>"
             . "<a href='deleteRecipient.php?list=$list&recipient=$r->id' "
               . "title='Delete this recipient'>&times;</a>"
           . "</div>"
