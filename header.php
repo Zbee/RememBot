@@ -11,6 +11,7 @@ $USLite = new USLite ($flywheel);
 
 $lists = new \JamesMoss\Flywheel\Repository("lists", $flywheel);
 $recipients = new \JamesMoss\Flywheel\Repository("recipients", $flywheel);
+$messages = new \JamesMoss\Flywheel\Repository("messages", $flywheel);
 
 $session = $USLite->session();
 
