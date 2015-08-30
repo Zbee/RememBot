@@ -16,7 +16,7 @@ $list = $list->value("id");
 if (array_key_exists("arn", $_POST)) {
   $data = [
     "id" => $recipients->query()->where("id", "!=", 0)
-      ->orderBy("id DESC")->limit(1, 0)->execute(),
+      ->orderBy("id DESC")->limit(1, 0)->execute()->value("id"),
     "list" => $list,
     "name" => $USLite->sanitize($_POST["arn"]),
     "contact" => strip_tags(trim($_POST["arc"])),
@@ -53,7 +53,7 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)->execute();
             . "<a href='toggleRecipient.php?$r->id' title='Active; Will receive next message'>A</a>"
             . "<a href='deleteRecipient.php?$r->id' title='Delete this recipient'>&times;</a>"
           . "</div>"
-        . "</div>";
+        . "</div> ";
     ?>
     <br><br>
     <a href='../../help' class='btn half'>Help</a>
