@@ -28,6 +28,9 @@ if (array_key_exists("arn", $_POST)) {
 
 $recipientsFL = $recipients->query()->where("list", "==", $list)
   ->orderBy("name ASC")->execute();
+
+$messagesFL = $messages->query()->where("list", "==", $list)
+  ->orderBy("date ASC")->execute();
 ?>
 
 <div id='body'>
@@ -64,6 +67,18 @@ $recipientsFL = $recipients->query()->where("list", "==", $list)
           . "</div>"
         . "</div> ";
     ?>
+    <br><br>
+    <b>Scheduled messages: <u><?=count($messagesFL)?></u></b>
+    <br>
+    <?php
+    foreach ($messagesFL as $m)
+      echo "<div class='combined quarter'>"
+        . "<div class='btn'><a href='#'>Tomorrow</a></div></div>";
+    ?>
+    <br>
+    <a href='createmessage?list=<?=$list?>' class='btn small quarter'>
+      Create a message
+    </a>
     <br><br>
     <a href='../../help' class='btn half'>Help</a>
     <a href='../' class='btn half'>Manage lists</a>
