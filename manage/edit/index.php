@@ -74,7 +74,9 @@ $messagesFL = $messages->query()->where("list", "==", $list)
     <?php
     foreach ($messagesFL as $m)
       echo "<div class='combined quarter'>"
-        . "<div class='btn'><a href='#'>Tomorrow</a></div></div>";
+        . "<div class='btn'><a href='#'>"
+        . date("Y-m-d\THi", $m->date)
+        . "</a></div></div>";
     ?>
     <br>
     <a href='createmessage?list=<?=$list?>' class='btn small quarter'>
