@@ -24,6 +24,7 @@ if (array_key_exists("arn", $_POST)) {
   ];
   $store = new \JamesMoss\Flywheel\Document($data);
   $recipients->store($store);
+  $e = sprintf($err, "Recipient has been added.");
 }
 
 $recipientsFL = $recipients->query()->where("list", "==", $list)
