@@ -12,7 +12,7 @@ if (array_key_exists("u", $_GET)) {
 }
 
 if (array_key_exists("u", $_POST)) {
-  $add = $USLite->addUser($_POST["u"], $_POST["p"], $_POST["e"], $_POST["i"]);
+  $add = $USLite->addUser($_POST["u"], $_POST["p"], $_POST["e"], trim($_POST["i"]);
   if ($add === true)
     $e = sprintf($err, "Your account has been created, <a href='../'>Log in "
       . "now</a>.");
