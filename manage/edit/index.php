@@ -45,7 +45,7 @@ $messagesFL = $messages->query()->where("list", "==", $list)
       RememBot_<?=
       strtoupper(
         substr(
-          hash("sha512", $listO->value("name").$session["username"]),
+          hash("sha512", $listO->value("name").$session["salt"]),
           0,
           5
         )
@@ -86,10 +86,11 @@ $messagesFL = $messages->query()->where("list", "==", $list)
     <br>
     <?php
     foreach ($messagesFL as $m)
-      echo "<div class='combined quarter'>"
-        . "<div class='btn'><a href='modifymessage?$m->id'>"
-        . date("Y-m-d\THi", $m->date)
-        . "</a></div></div>";
+      if ($m->sent === 0)
+        echo "<div class='combined quarter'>"
+          . "<div class='btn'><a href='modifymessage?$m->id'>"
+          . date("Y-m-d\THi", $m->date)
+          . "</a></div></div>";
     ?>
     <br>
     <a href='createmessage?list=<?=$list?>' class='btn small quarter'>
