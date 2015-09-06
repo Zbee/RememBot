@@ -40,6 +40,19 @@ $messagesFL = $messages->query()->where("list", "==", $list)
       <?=$session["username"]?></h1>
     <?=$e?>
     <br>
+    <div class='alert'>
+      Your IFTTT recipe must have an event name of:
+      RememBot_<?=
+      strtoupper(
+        substr(
+          hash("sha512", $listO->value("name").$session["username"]),
+          0,
+          5
+        )
+      )
+      ?>
+    </div>
+    <br>
     <b>Add a recipient to this list</b>
     <br>
     <form action='' method='post' class='ignore'>
