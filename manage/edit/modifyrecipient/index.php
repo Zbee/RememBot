@@ -41,10 +41,10 @@ if (array_key_exists("n", $_POST)) {
     <h1>Modify recipient "<?=$recipient->value("name")?>", <?=$session["username"]?></h1>
     <?=$e?>
     <br>
-    <b>List:</b> <a href='../?<?=$recipient->value("list")?>'>
-        <?=$list->value("name")?>
-      </a>
-    <br>
+    <a href='../?<?=$list->value("id")?>'>
+      &larr; Back to <?=$list->value("name")?> list
+    </a>
+    <br><br>
     <form action='' method='post'>
       <b>Name:</b>
         <input type='text' name='n' class='small' value='<?=$recipient->value("name")?>'>
