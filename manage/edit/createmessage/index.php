@@ -17,10 +17,12 @@ if (array_key_exists("d", $_POST)) {
       ->orderBy("id DESC")->limit(1, 0)->execute()->value("id") + 1,
     "list" => $list->value("id"),
     "date" => strtotime($USLite->sanitize($_POST["d"])),
-    "message" => $USLite->sanitize($_POST["b"])
+    "message" => $USLite->sanitize($_POST["b"]),
+    "sent" => 0
   ];
   $store = new \JamesMoss\Flywheel\Document($data);
-  $USLite->redirect301("../" . $list->value("id") . "?messageadded");
+  $messages->store($store);
+  $e = sprintf($err, "Message has been created.");
 }
 ?>
 
