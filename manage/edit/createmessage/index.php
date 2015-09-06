@@ -13,6 +13,8 @@ if ($list->value("owner") !== $session["id"]) $USLite->redirect301("../../");
 
 if (array_key_exists("d", $_POST)) {
   $data = [
+    "id" => $messages->query()->where("id", ">", 0)
+      ->orderBy("id DESC")->limit(1, 0)->execute()->value("id") + 1,
     "list" => $list->value("id"),
     "date" => strtotime($USLite->sanitize($_POST["d"])),
     "message" => $USLite->sanitize($_POST["b"])
