@@ -23,7 +23,8 @@ if (array_key_exists("d", $_POST)) {
       "id" => $message->value("id"),
       "list" => $message->value("list"),
       "date" => strtotime($USLite->sanitize($_POST["d"])),
-      "message" => $USLite->sanitize($_POST["b"])
+      "message" => $USLite->sanitize($_POST["b"]),
+      "sent" => $message->value("sent")
     ];
     $update = new \JamesMoss\Flywheel\Document($data);
     foreach ($message as $r)
@@ -53,6 +54,13 @@ if (array_key_exists("d", $_POST)) {
     <b>Message</b>
       <textarea name='b' class='full' placeholder='Message' rows='5'><?=$USLite->sanitize($message->value("message"))?></textarea>
     <br>
+    <b>Sent:</b>
+      <?=
+      $message->value("sent") === 1
+        ? "Yes <sup>(<a href='#'>resend</a>)</sup>"
+        : "No"
+      ?>
+    <br><br>
     <button class='btn'>Save changes</button>
     <br><br><br>
     <a href='../../../help' class='btn half'>Help</a>
