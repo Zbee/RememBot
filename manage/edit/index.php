@@ -85,16 +85,29 @@ $messagesFL = $messages->query()->where("list", "==", $list)
     <b>Scheduled messages: <u><?=count($messagesFL)?></u></b>
     <br>
     <?php
+    $hidden = "";
     foreach ($messagesFL as $m)
       if ($m->sent === 0)
         echo "<div class='combined quarter'>"
           . "<div class='btn'><a href='modifymessage?$m->id'>"
           . date("Y-m-d\THi", $m->date)
           . "</a></div></div>";
+      else
+        $hidden .= "<div class='combined quarter'>"
+          . "<div class='btn'><a href='modifymessage?$m->id'>"
+          . date("Y-m-d\THi", $m->date)
+          . "</a></div></div>";
+      echo "<div class='hidden' id='hidden'>$hidden</div>";
     ?>
     <br>
     <a href='createmessage?list=<?=$list?>' class='btn small quarter'>
       Create a message
+    </a>
+    <a href='#' onClick='claps.show("hidden"), claps.show("hiddenb"), claps.hide("hiddens")' class='btn small quarter' id='hiddens'>
+      Show sent messages
+    </a>
+    <a href='#' onClick='claps.hide("hidden"), claps.hide("hiddenb"), claps.show("hiddens")' class='btn small quarter hidden' id='hiddenb'>
+      Hide sent messages
     </a>
     <br><br>
     <a href='../../help' class='btn half'>Help</a>

@@ -36,5 +36,7 @@ $e = "";
     <title>RememBot</title>
 
     <link rel='stylesheet' href='/assets/css/style.css' type='text/css'>
+
+    <script src='/assets/js/claps.js'></script>
   </head>
   <body>
