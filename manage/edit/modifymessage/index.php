@@ -62,6 +62,7 @@ if (array_key_exists("d", $_POST)) {
       ?>
     <br><br>
     <button class='btn'>Save changes</button>
+    <a href='#'>Delete message</a>
     <br><br><br>
     <a href='../../../help' class='btn half'>Help</a>
     <a href='../../' class='btn half'>Manage lists</a>
