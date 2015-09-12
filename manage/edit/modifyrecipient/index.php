@@ -32,7 +32,7 @@ if (array_key_exists("n", $_POST)) {
     $recipients->store($update);
     $recipient = $recipients->query()->where("id", "==", $id)->execute();
     $e = sprintf($err, "This recipient has been updated.");
-  }
+  } else $e = sprintf($err, "No information changed, recipient not updated.");
 }
 ?>
 
